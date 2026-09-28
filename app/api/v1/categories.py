@@ -33,7 +33,6 @@ async def create_category(
         category = await service.create(db, data)
         await db.commit()
         return category
-
     except Exception:
         await db.rollback()
         raise
@@ -66,68 +65,3 @@ async def get_category(
         )
 
     return category
-
-
-@router.patch(
-    "/{category_id}",
-    response_model=CategoryResponse,
-)
-async def update_category(
-    category_id: uuid.UUID,
-    data: CategoryUpdate,
-    db: AsyncSession = Depends(get_db),
-):
-    try:
-        category = await service.update(
-            db,
-            category_id,
-            data,
-        )
-
-        if not category:
-            raise HTTPException(
-                status_code=404,
-                detail="Category not found",
-            )
-
-        await db.commit()
-        return category
-
-    except HTTPException:
-        await db.rollback()
-        raise
-
-    except Exception:
-        await db.rollback()
-        raise
-
-
-@router.delete(
-    "/{category_id}",
-    status_code=status.HTTP_204_NO_CONTENT,
-)
-async def delete_category(
-    category_id: uuid.UUID,
-    db: AsyncSession = Depends(get_db),
-):
-    try:
-        category = await service.delete(
-            db,
-            category_id,
-        )
-
-        if not category:
-            raise HTTPException(
-                status_code=404,
-                detail="Category not found",
-            )
-
-        await db.commit()
-
-    except HTTPException:
-        await db.rollback()
-        raise
-
-    except Exception:
-        await db.rollback()
-        raise
