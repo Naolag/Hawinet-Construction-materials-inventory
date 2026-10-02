@@ -20,16 +20,16 @@ class ProductRepository:
         return product
 
     async def get_by_id(
-        self,
-        db: AsyncSession,
-        product_id: uuid.UUID,
+            self,
+            db: AsyncSession,
+            product_id: uuid.UUID,
     ) -> Product | None:
         result = await db.execute(
             select(Product).where(
                 Product.product_id == product_id,
-            )
+                Product.is_active.is_(True),
+                )
         )
-
         return result.scalar_one_or_none()
 
     async def get_all(
@@ -37,7 +37,9 @@ class ProductRepository:
         db: AsyncSession,
     ) -> list[Product]:
         result = await db.execute(
-            select(Product).order_by(Product.created_at.desc())
+            select(Product)
+            .where(Product.is_active.is_(True))
+            .select(Product).order_by(Product.created_at.desc())
         )
 
         return list(result.scalars().all())
