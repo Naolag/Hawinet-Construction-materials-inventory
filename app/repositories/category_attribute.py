@@ -61,3 +61,16 @@ class CategoryAttributeRepository:
     ) -> None:
         await db.delete(relationship)
         await db.flush()
+    async def exists(
+        self,
+        db: AsyncSession,
+        category_id: uuid.UUID,
+        attribute_id: uuid.UUID,
+    ) -> bool:
+        result = await db.execute(
+            select(CategoryAttribute).where(
+                CategoryAttribute.category_id == category_id,
+                CategoryAttribute.attribute_id == attribute_id,
+                )
+        )
+        return result.scalar_one_or_none() is not None
