@@ -93,7 +93,7 @@ class InventoryTransactionResponse(BaseModel):
     status: str
     created_at: datetime
     posted_at: datetime | None
-    items: list["InventoryTransactionItemResponse"] = []
+    items: list["InventoryTransactionItemResponse"] = Field(default_factory=list)
 
 
 class InventoryTransactionItemResponse(BaseModel):
