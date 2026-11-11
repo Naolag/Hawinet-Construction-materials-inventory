@@ -90,12 +90,13 @@ class InventoryRepository:
         await db.flush()
         return transaction
 
-    async def get_transaction(self, db: AsyncSession, transaction_id: uuid.UUID):
-        result = await db.execute(
-            select(InventoryTransaction)
-            .where(InventoryTransaction.inventory_transaction_id == transaction_id)
-            .with_for_update()
+    async def get_transaction(self, db: AsyncSession, transaction_id: uuid.UUID, lock: bool = False):
+        query = select(InventoryTransaction).where(
+            InventoryTransaction.inventory_transaction_id == transaction_id
         )
+        if lock:
+            query = query.with_for_update()
+        result = await db.execute(query)
         return result.scalar_one_or_none()
 
     async def list_transactions(self, db: AsyncSession, limit: int = 100, offset: int = 0):
