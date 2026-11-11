@@ -94,6 +94,7 @@ class InventoryRepository:
         result = await db.execute(
             select(InventoryTransaction)
             .where(InventoryTransaction.inventory_transaction_id == transaction_id)
+            .with_for_update()
         )
         return result.scalar_one_or_none()
 
