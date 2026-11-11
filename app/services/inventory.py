@@ -109,6 +109,8 @@ class InventoryService:
                 return "unit_not_enabled_for_sale"
             if data.transaction_type == "SUPPLIER_RETURN" and not configured.can_purchase:
                 return "unit_not_enabled_for_purchase"
+            if data.transaction_type == "CUSTOMER_RETURN" and not configured.can_sell:
+                return "unit_not_enabled_for_sale"
 
             price = line.unit_price
             if price is None:
