@@ -6,9 +6,7 @@ from app.api.v1.category_attributes import router as category_attributes_router
 from app.api.v1.measurement_units import router as measurement_units_router
 from app.api.v1.products import router as products_router
 from app.api.v1.variants import router as variants_router
-from app.api.v1.variant_attributes import (
-    router as variant_attributes_router,
-)
+from app.api.v1.variant_attributes import router as variant_attributes_router
 
 api_router = APIRouter(prefix="/api/v1")
 
