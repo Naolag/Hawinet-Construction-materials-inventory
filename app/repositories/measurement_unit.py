@@ -46,6 +46,7 @@ class MeasurementUnitRepository:
             select(MeasurementUnit)
             .join(MeasurementUnitCategory, MeasurementUnitCategory.category_id == MeasurementUnit.category_id)
             .where(
+                MeasurementUnitCategory.default_unit_id == primary_unit.unit_id,
                 MeasurementUnit.category_id == primary_unit.category_id,
                 MeasurementUnit.unit_id != primary_unit.unit_id,
                 MeasurementUnit.is_active.is_(True),
