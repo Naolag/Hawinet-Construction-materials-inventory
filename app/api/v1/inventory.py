@@ -38,6 +38,8 @@ def handle_result(value):
         raise HTTPException(422, "This unit is not enabled for sale")
     if value == "unit_must_have_usage":
         raise HTTPException(422, "A unit must be enabled for purchase, sale, or both")
+    if value == "stock_unit_conversion_must_be_one":
+        raise HTTPException(422, "The inventory item's base stock unit must always have a conversion factor of 1")
     if value == "inventory_item_not_found":
         raise HTTPException(404, "Active inventory item not found")
     if value == "transaction_not_found":
