@@ -1,5 +1,5 @@
 import uuid
-from datetime import datetime, time, timedelta, timezone
+from datetime import date, datetime, time, timedelta
 from typing import Literal
 from zoneinfo import ZoneInfo
 
@@ -205,23 +205,21 @@ async def get_inventory_stock(db: AsyncSession = Depends(get_db)):
 @router.get("/inventory-reports/sales", response_model=list[InventoryReportRow])
 async def get_inventory_sales_report(
     period: Literal["daily", "weekly", "monthly"] = "daily",
-    on_date: datetime | None = None,
+    on_date: date | None = None,
     db: AsyncSession = Depends(get_db),
 ):
     shop_timezone = ZoneInfo("Africa/Addis_Ababa")
-    anchor = on_date or datetime.now(shop_timezone)
-    if anchor.tzinfo is None:
-        anchor = anchor.replace(tzinfo=shop_timezone)
+    anchor_date = on_date or datetime.now(shop_timezone).date()
     if period == "daily":
-        start = datetime.combine(anchor.date(), time.min, tzinfo=anchor.tzinfo)
+        start = datetime.combine(anchor_date, time.min, tzinfo=shop_timezone)
         end = start + timedelta(days=1)
     elif period == "weekly":
-        start_date = anchor.date() - timedelta(days=anchor.weekday())
-        start = datetime.combine(start_date, time.min, tzinfo=anchor.tzinfo)
+        start_date = anchor_date - timedelta(days=anchor_date.weekday())
+        start = datetime.combine(start_date, time.min, tzinfo=shop_timezone)
         end = start + timedelta(days=7)
     else:
-        first = anchor.date().replace(day=1)
-        start = datetime.combine(first, time.min, tzinfo=anchor.tzinfo)
+        first = anchor_date.replace(day=1)
+        start = datetime.combine(first, time.min, tzinfo=shop_timezone)
         if first.month == 12:
             end = start.replace(year=first.year + 1, month=1)
         else:
