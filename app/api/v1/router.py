@@ -3,6 +3,7 @@ from fastapi import APIRouter
 from app.api.v1.attributes import router as attributes_router
 from app.api.v1.categories import router as categories_router
 from app.api.v1.category_attributes import router as category_attributes_router
+from app.api.v1.measurement_units import router as measurement_units_router
 from app.api.v1.products import router as products_router
 from app.api.v1.variants import router as variants_router
 from app.api.v1.variant_attributes import (
@@ -17,3 +18,4 @@ api_router.include_router(category_attributes_router)
 api_router.include_router(products_router)
 api_router.include_router(variants_router)
 api_router.include_router(variant_attributes_router)
+api_router.include_router(measurement_units_router)
