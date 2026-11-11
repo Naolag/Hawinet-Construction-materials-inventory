@@ -50,6 +50,13 @@ class InventoryItemUnitUpdate(BaseModel):
     purchase_price: Decimal | None = Field(default=None, ge=0, max_digits=20, decimal_places=6)
     selling_price: Decimal | None = Field(default=None, ge=0, max_digits=20, decimal_places=6)
 
+    @model_validator(mode="after")
+    def reject_null_for_required_fields(self):
+        for field in ("conversion_factor", "can_purchase", "can_sell"):
+            if field in self.model_fields_set and getattr(self, field) is None:
+                raise ValueError(f"{field} cannot be null")
+        return self
+
 
 class InventoryItemUnitResponse(BaseModel):
     model_config = ConfigDict(from_attributes=True)
