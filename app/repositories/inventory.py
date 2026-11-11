@@ -80,7 +80,7 @@ class InventoryRepository:
     async def current_stock(self, db: AsyncSession, item_id: uuid.UUID) -> Decimal:
         result = await db.execute(
             text("SELECT current_stock FROM public.inventory_stock_balances WHERE inventory_item_id = :item_id"),
-            {"item_id": str(item_id)},
+            {"item_id": item_id},
         )
         value = result.scalar_one_or_none()
         return value if value is not None else Decimal("0")
