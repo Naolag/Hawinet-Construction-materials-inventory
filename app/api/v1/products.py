@@ -1,3 +1,4 @@
+
 import uuid
 
 from fastapi import APIRouter, Depends, HTTPException, status
@@ -30,24 +31,16 @@ async def create_product(
     db: AsyncSession = Depends(get_db),
 ):
     try:
-        product = await service.create(
-            db,
-            data,
-        )
+        product = await service.create(db, data)
 
         if product == "category_not_found":
             raise HTTPException(
-                status_code=404,
+                status_code=status.HTTP_404_NOT_FOUND,
                 detail="Category not found",
             )
 
         await db.commit()
-
         return product
-
-    except HTTPException:
-        await db.rollback()
-        raise
 
     except Exception:
         await db.rollback()
@@ -72,14 +65,11 @@ async def get_product(
     product_id: uuid.UUID,
     db: AsyncSession = Depends(get_db),
 ):
-    product = await service.get_by_id(
-        db,
-        product_id,
-    )
+    product = await service.get_by_id(db, product_id)
 
     if not product:
         raise HTTPException(
-            status_code=404,
+            status_code=status.HTTP_404_NOT_FOUND,
             detail="Product not found",
         )
 
@@ -104,23 +94,18 @@ async def update_product(
 
         if product == "product_not_found":
             raise HTTPException(
-                status_code=404,
+                status_code=status.HTTP_404_NOT_FOUND,
                 detail="Product not found",
             )
 
         if product == "category_not_found":
             raise HTTPException(
-                status_code=404,
+                status_code=status.HTTP_404_NOT_FOUND,
                 detail="Category not found",
             )
 
         await db.commit()
-
         return product
-
-    except HTTPException:
-        await db.rollback()
-        raise
 
     except Exception:
         await db.rollback()
@@ -136,22 +121,15 @@ async def delete_product(
     db: AsyncSession = Depends(get_db),
 ):
     try:
-        product = await service.delete(
-            db,
-            product_id,
-        )
+        product = await service.delete(db, product_id)
 
         if not product:
             raise HTTPException(
-                status_code=404,
+                status_code=status.HTTP_404_NOT_FOUND,
                 detail="Product not found",
             )
 
         await db.commit()
-
-    except HTTPException:
-        await db.rollback()
-        raise
 
     except Exception:
         await db.rollback()

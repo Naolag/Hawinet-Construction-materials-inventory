@@ -1,3 +1,4 @@
+
 import uuid
 
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -18,30 +19,30 @@ class ProductService:
         self,
         db: AsyncSession,
         data: ProductCreate,
-    ) -> Product | None:
-
+    ):
         category = await self.category_repository.get_by_id(
             db,
             data.category_id,
         )
 
         if not category:
-            return None
+            return "category_not_found"
 
         product = Product(
             category_id=data.category_id,
             name=data.name.strip() if data.name else None,
             description=data.description,
-            is_active=data.is_active,
+            is_active=(
+                data.is_active
+                if data.is_active is not None
+                else True
+            ),
             quantity=data.quantity,
             price=data.price,
             brand=data.brand,
         )
 
-        return await self.repository.create(
-            db,
-            product,
-        )
+        return await self.repository.create(db, product)
 
     async def get_all(
         self,
@@ -64,15 +65,14 @@ class ProductService:
         db: AsyncSession,
         product_id: uuid.UUID,
         data: ProductUpdate,
-    ) -> Product | None:
-
+    ):
         product = await self.repository.get_by_id(
             db,
             product_id,
         )
 
         if not product:
-            return None
+            return "product_not_found"
 
         if data.category_id is not None:
             category = await self.category_repository.get_by_id(
@@ -81,7 +81,7 @@ class ProductService:
             )
 
             if not category:
-                return None
+                return "category_not_found"
 
             product.category_id = data.category_id
 
@@ -103,17 +103,13 @@ class ProductService:
         if data.brand is not None:
             product.brand = data.brand
 
-        return await self.repository.update(
-            db,
-            product,
-        )
+        return await self.repository.update(db, product)
 
     async def delete(
         self,
         db: AsyncSession,
         product_id: uuid.UUID,
-    ) -> Product | None:
-
+    ):
         product = await self.repository.get_by_id(
             db,
             product_id,
@@ -124,7 +120,4 @@ class ProductService:
 
         product.is_active = False
 
-        return await self.repository.update(
-            db,
-            product,
-        )
+        return await self.repository.update(db, product)

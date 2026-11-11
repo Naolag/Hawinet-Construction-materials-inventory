@@ -1,3 +1,4 @@
+
 import uuid
 
 from sqlalchemy import select
@@ -16,19 +17,18 @@ class ProductRepository:
         db.add(product)
         await db.flush()
         await db.refresh(product)
-
         return product
 
     async def get_by_id(
-            self,
-            db: AsyncSession,
-            product_id: uuid.UUID,
+        self,
+        db: AsyncSession,
+        product_id: uuid.UUID,
     ) -> Product | None:
         result = await db.execute(
             select(Product).where(
                 Product.product_id == product_id,
                 Product.is_active.is_(True),
-                )
+            )
         )
         return result.scalar_one_or_none()
 
@@ -39,9 +39,8 @@ class ProductRepository:
         result = await db.execute(
             select(Product)
             .where(Product.is_active.is_(True))
-            .select(Product).order_by(Product.created_at.desc())
+            .order_by(Product.created_at.desc())
         )
-
         return list(result.scalars().all())
 
     async def update(
@@ -51,5 +50,4 @@ class ProductRepository:
     ) -> Product:
         await db.flush()
         await db.refresh(product)
-
         return product
