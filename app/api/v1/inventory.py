@@ -1,6 +1,7 @@
 import uuid
 from datetime import datetime, time, timedelta, timezone
 from typing import Literal
+from zoneinfo import ZoneInfo
 
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy.exc import IntegrityError
@@ -205,7 +206,10 @@ async def get_inventory_sales_report(
     on_date: datetime | None = None,
     db: AsyncSession = Depends(get_db),
 ):
-    anchor = on_date or datetime.now(timezone.utc)
+    shop_timezone = ZoneInfo("Africa/Addis_Ababa")
+    anchor = on_date or datetime.now(shop_timezone)
+    if anchor.tzinfo is None:
+        anchor = anchor.replace(tzinfo=shop_timezone)
     if period == "daily":
         start = datetime.combine(anchor.date(), time.min, tzinfo=anchor.tzinfo)
         end = start + timedelta(days=1)
