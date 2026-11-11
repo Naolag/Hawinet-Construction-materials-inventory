@@ -30,7 +30,7 @@ class InventoryItem(Base):
     is_active: Mapped[bool] = mapped_column(Boolean, server_default="true", nullable=False)
 
     units = relationship("InventoryItemUnit", back_populates="inventory_item", cascade="all, delete-orphan")
-    transaction_items = relationship("InventoryTransactionItem", back_populates="inventory_item")
+    transaction_items = relationship("InventoryTransactionItem", back_populates="inventory_item", foreign_keys="InventoryTransactionItem.inventory_item_id")
 
 
 class InventoryItemUnit(Base):
@@ -74,7 +74,7 @@ class InventoryTransaction(Base):
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now(), nullable=False)
     posted_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
 
-    items = relationship("InventoryTransactionItem", back_populates="transaction", cascade="all, delete-orphan")
+    items = relationship("InventoryTransactionItem", back_populates="transaction", cascade="all, delete-orphan", lazy="selectin")
 
 
 class InventoryTransactionItem(Base):
@@ -103,4 +103,4 @@ class InventoryTransactionItem(Base):
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now(), nullable=False)
 
     transaction = relationship("InventoryTransaction", back_populates="items")
-    inventory_item = relationship("InventoryItem", back_populates="transaction_items")
+    inventory_item = relationship("InventoryItem", back_populates="transaction_items", foreign_keys=[inventory_item_id])
