@@ -134,7 +134,7 @@ class InventoryService:
         return await self.repository.list_transactions(db, limit, offset)
 
     async def post_transaction(self, db: AsyncSession, transaction_id: uuid.UUID):
-        transaction = await self.repository.get_transaction(db, transaction_id)
+        transaction = await self.repository.get_transaction(db, transaction_id, lock=True)
         if not transaction:
             return "transaction_not_found"
         if transaction.status != "DRAFT":
