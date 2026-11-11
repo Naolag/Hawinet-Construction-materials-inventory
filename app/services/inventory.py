@@ -77,6 +77,14 @@ class InventoryService:
         row = await self.repository.get_item_unit(db, item_id, unit_id)
         if not row:
             return None
+        item = await self.repository.get_item(db, item_id)
+        if (
+            item
+            and row.unit_id == item.stock_unit_id
+            and data.conversion_factor is not None
+            and data.conversion_factor != Decimal("1")
+        ):
+            return "stock_unit_conversion_must_be_one"
         for field, value in data.model_dump(exclude_unset=True).items():
             setattr(row, field, value)
         if not row.can_purchase and not row.can_sell:
