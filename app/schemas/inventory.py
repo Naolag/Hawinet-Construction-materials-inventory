@@ -83,19 +83,6 @@ class InventoryTransactionCreate(BaseModel):
     items: list[TransactionLineCreate] = Field(min_length=1)
 
 
-class InventoryTransactionResponse(BaseModel):
-    model_config = ConfigDict(from_attributes=True)
-    inventory_transaction_id: uuid.UUID
-    transaction_type: str
-    transaction_date: datetime
-    reference_number: str | None
-    notes: str | None
-    status: str
-    created_at: datetime
-    posted_at: datetime | None
-    items: list["InventoryTransactionItemResponse"] = Field(default_factory=list)
-
-
 class InventoryTransactionItemResponse(BaseModel):
     model_config = ConfigDict(from_attributes=True)
     transaction_item_id: uuid.UUID
@@ -108,6 +95,19 @@ class InventoryTransactionItemResponse(BaseModel):
     unit_price: Decimal | None
     line_total: Decimal | None
     created_at: datetime
+
+
+class InventoryTransactionResponse(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+    inventory_transaction_id: uuid.UUID
+    transaction_type: str
+    transaction_date: datetime
+    reference_number: str | None
+    notes: str | None
+    status: str
+    created_at: datetime
+    posted_at: datetime | None
+    items: list[InventoryTransactionItemResponse] = Field(default_factory=list)
 
 
 class StockBalanceResponse(BaseModel):
