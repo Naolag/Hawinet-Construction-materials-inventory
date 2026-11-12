@@ -84,7 +84,6 @@ class TransactionLineCreate(BaseModel):
 
 class InventoryTransactionCreate(BaseModel):
     transaction_type: TransactionType
-    transaction_date: datetime | None = None
     reference_number: str | None = Field(default=None, max_length=255)
     notes: str | None = None
     items: list[TransactionLineCreate] = Field(min_length=1)
