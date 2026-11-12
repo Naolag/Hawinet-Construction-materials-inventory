@@ -76,13 +76,15 @@ TransactionType = Literal["RECEIPT", "SALE", "CUSTOMER_RETURN", "SUPPLIER_RETURN
 
 
 class TransactionLineCreate(BaseModel):
-    inventory_item_id: uuid.UUID
-    unit_id: uuid.UUID
-    quantity: Decimal = Field(gt=0, max_digits=20, decimal_places=6)
-    unit_price: Decimal | None = Field(default=None, ge=0, max_digits=20, decimal_places=6)
+    inventory_item_id: uuid.UUID = Field(description="Inventory item being moved.")
+    unit_id: uuid.UUID = Field(description="Configured purchase/selling unit used for this transaction.")
+    quantity: Decimal = Field(gt=0, max_digits=20, decimal_places=6, description="Quantity entered by the employee in the selected unit.")
+    unit_price: Decimal | None = Field(default=None, ge=0, max_digits=20, decimal_places=6, description="Optional price per selected transaction unit. If omitted, the backend uses the configured unit price, then the product price converted from the stock unit.")
 
 
 class InventoryTransactionCreate(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
     transaction_type: TransactionType
     reference_number: str | None = Field(default=None, max_length=255)
     notes: str | None = None
