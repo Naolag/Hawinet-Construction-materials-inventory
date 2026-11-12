@@ -68,3 +68,31 @@ def test_transaction_line_quantity_must_be_positive():
                 "quantity": "0",
             }],
         )
+
+
+def test_transaction_date_is_not_accepted_from_client():
+    with pytest.raises(ValidationError):
+        InventoryTransactionCreate(
+            transaction_type="SALE",
+            transaction_date="2026-11-12T10:00:00Z",
+            items=[{
+                "inventory_item_id": str(uuid.uuid4()),
+                "unit_id": str(uuid.uuid4()),
+                "quantity": "2",
+            }],
+        )
+
+
+def test_transaction_line_does_not_require_conversion_factor_or_unit_price():
+    transaction = InventoryTransactionCreate(
+        transaction_type="SALE",
+        items=[{
+            "inventory_item_id": str(uuid.uuid4()),
+            "unit_id": str(uuid.uuid4()),
+            "quantity": "2",
+        }],
+    )
+    line = transaction.items[0]
+    assert line.quantity == Decimal("2")
+    assert line.unit_price is None
+    assert not hasattr(line, "conversion_factor")
