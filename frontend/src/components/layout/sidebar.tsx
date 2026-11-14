@@ -1,0 +1,26 @@
+"use client";
+import Link from "next/link";
+import {usePathname} from "next/navigation";
+import {LayoutDashboard,Package,ArrowLeftRight,BarChart3,Boxes,Layers,Tags,Users,Ruler,Settings,ChevronDown,UserRound} from "lucide-react";
+import type {LucideIcon} from "lucide-react";
+type NavItem={label:string;href:string;icon:LucideIcon};
+export const workspaceLinks:NavItem[]=[
+ {label:"Dashboard",href:"/",icon:LayoutDashboard},
+ {label:"Products",href:"/products",icon:Package},
+ {label:"Inventory Management",href:"/inventory",icon:Boxes},
+ {label:"Transactions",href:"/transactions",icon:ArrowLeftRight},
+ {label:"Reports",href:"/reports",icon:BarChart3}
+];
+export const managementLinks:NavItem[]=[
+ {label:"Categories",href:"/categories",icon:Tags},
+ {label:"Employee Management",href:"/employees",icon:Users},
+ {label:"Unit Conversions",href:"/unit-conversions",icon:ArrowLeftRight},
+ {label:"Measurement Units",href:"/measurement-units",icon:Ruler},
+ {label:"Settings",href:"/settings",icon:Settings}
+];
+export function Brand(){return <div className="hawinet-brand"><span className="hawinet-brand-mark"><Layers size={23}/></span><span>Hawinet</span></div>}
+export default function Sidebar({onNavigate}:{onNavigate?:()=>void}){
+ const path=usePathname();
+ const render=(links:NavItem[])=>links.map(item=>{const Icon=item.icon;const active=path===item.href||(item.href!=="/"&&path.startsWith(item.href));return <Link key={item.href} href={item.href} onClick={onNavigate} className={"workspace-nav-link"+(active?" active":"")}><Icon size={18}/><span>{item.label}</span></Link>});
+ return <aside className="workspace-sidebar"><Brand/><div className="workspace-switch"><span className="workspace-avatar">H</span><span className="workspace-switch-copy"><b>Main workspace</b><small>Inventory management</small></span><ChevronDown size={15}/></div><div className="workspace-nav-label">WORKSPACE</div><nav className="workspace-nav">{render(workspaceLinks)}</nav><div className="workspace-nav-label management-label">MANAGEMENT</div><nav className="workspace-nav">{render(managementLinks)}</nav><div className="workspace-profile"><span className="workspace-profile-avatar">NG</span><span className="workspace-profile-copy"><b>Naol Gonfa</b><small>Administrator</small></span><UserRound size={17}/></div></aside>;
+}

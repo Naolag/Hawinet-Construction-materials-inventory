@@ -1,0 +1,3 @@
+import{apiConfig}from"./config";import{ApiError}from"./errors";
+// Reserved for later integration. No prototype screen imports this client.
+export async function apiRequest<T>(path:string,init?:RequestInit):Promise<T>{if(!apiConfig.enabled||!apiConfig.baseUrl)throw new ApiError("API integration is disabled for the visual prototype.");const response=await fetch(new URL(path,apiConfig.baseUrl),{...init,headers:{"Content-Type":"application/json",...init?.headers}});const body=await response.json().catch(()=>null);if(!response.ok)throw new ApiError(body?.detail??"The API request failed.",response.status,body);return body as T}

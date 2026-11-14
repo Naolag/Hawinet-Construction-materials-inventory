@@ -1,0 +1,3 @@
+import type{ReactNode}from"react";
+export type DataColumn<T>={key:keyof T|string;label:string;render?:(row:T)=>ReactNode};
+export default function DataTable<T extends Record<string,unknown>>({columns,rows,empty="No records found."}:{columns:DataColumn<T>[];rows:T[];empty?:string}){return <div className="hawinet-table-wrap"><table className="hawinet-table"><thead><tr>{columns.map(c=><th key={String(c.key)}>{c.label}</th>)}</tr></thead><tbody>{rows.length?rows.map((r,i)=><tr key={i}>{columns.map(c=><td key={String(c.key)}>{c.render?c.render(r):String(r[c.key as keyof T]??"—")}</td>)}</tr>):<tr><td colSpan={columns.length} className="hawinet-table-empty">{empty}</td></tr>}</tbody></table></div>}

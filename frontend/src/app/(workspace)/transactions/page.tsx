@@ -1,0 +1,1 @@
+import TransactionsWorkspace from "@/features/transactions/components/transactions-workspace";export default function Page(){return <TransactionsWorkspace/>}
