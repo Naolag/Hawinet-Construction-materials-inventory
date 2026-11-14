@@ -1,0 +1,1 @@
+import InventoryWorkspace from "@/features/inventory/components/inventory-workspace";export default function Page(){return <InventoryWorkspace initialScreen="Settings"/>}

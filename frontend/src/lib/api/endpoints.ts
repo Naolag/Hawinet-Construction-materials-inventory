@@ -1,0 +1,2 @@
+// Confirm endpoint contracts against FastAPI before wiring screens.
+export const apiEndpoints={products:"/api/v1/products",categories:"/api/v1/categories",measurementUnits:"/api/v1/measurement-units"} as const;
