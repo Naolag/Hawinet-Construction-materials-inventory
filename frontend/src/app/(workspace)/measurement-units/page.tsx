@@ -1,1 +1,1 @@
-import InventoryWorkspace from "@/features/inventory/components/inventory-workspace";export default function Page(){return <InventoryWorkspace initialScreen="Measurement Units"/>}
+import MeasurementUnitsPage from"@/features/measurement-units/components/measurement-units-page";export default function Page(){return <MeasurementUnitsPage/>}

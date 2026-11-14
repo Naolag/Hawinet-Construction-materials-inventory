@@ -1,1 +1,1 @@
-import InventoryWorkspace from "@/features/inventory/components/inventory-workspace";export default function Page(){return <InventoryWorkspace initialScreen="Unit Conversions"/>}
+import UnitConversionsPage from"@/features/unit-conversions/components/unit-conversions-page";export default function Page(){return <UnitConversionsPage/>}

@@ -1,0 +1,3 @@
+"use client";
+import{useEffect,type ReactNode}from"react";
+export default function Modal({title,children,onClose,footer}:{title:string;children:ReactNode;onClose:()=>void;footer?:ReactNode}){useEffect(()=>{const fn=(e:KeyboardEvent)=>{if(e.key==="Escape")onClose()};window.addEventListener("keydown",fn);return()=>window.removeEventListener("keydown",fn)},[onClose]);return <div className="hawinet-modal-backdrop" onMouseDown={e=>{if(e.target===e.currentTarget)onClose()}}><section className="hawinet-modal" role="dialog" aria-modal="true" aria-label={title}><header><h2>{title}</h2><button type="button" onClick={onClose} aria-label="Close dialog">×</button></header><div className="hawinet-modal-body">{children}</div>{footer&&<footer>{footer}</footer>}</section></div>}

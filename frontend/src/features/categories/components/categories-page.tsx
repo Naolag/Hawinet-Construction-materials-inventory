@@ -1,0 +1,1 @@
+import InventoryWorkspace from"@/features/inventory/components/inventory-workspace";export default function CategoriesPage(){return <InventoryWorkspace initialScreen="Categories"/>}

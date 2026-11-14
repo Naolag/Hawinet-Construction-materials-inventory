@@ -1,1 +1,1 @@
-import InventoryWorkspace from "@/features/inventory/components/inventory-workspace";export default function Page(){return <InventoryWorkspace initialScreen="Employee Management"/>}
+import EmployeesPage from"@/features/employees/components/employees-page";export default function Page(){return <EmployeesPage/>}

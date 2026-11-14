@@ -1,1 +1,1 @@
-import InventoryWorkspace from "@/features/inventory/components/inventory-workspace";export default function Page(){return <InventoryWorkspace initialScreen="Categories"/>}
+import CategoriesPage from"@/features/categories/components/categories-page";export default function Page(){return <CategoriesPage/>}
