@@ -3,7 +3,8 @@ import uuid
 from sqlalchemy import and_, func, or_, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.models.measurement_unit import MeasurementUnit, MeasurementUnitCategory
+from app.models.measurement_unit import MeasurementUnit
+from app.models.measurement_unit_category import MeasurementUnitCategory
 
 
 class MeasurementUnitRepository:
