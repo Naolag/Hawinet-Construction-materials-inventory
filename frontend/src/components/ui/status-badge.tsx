@@ -1,0 +1,1 @@
+export default function StatusBadge({children,tone="neutral"}:{children:React.ReactNode;tone?:"neutral"|"success"|"warning"|"danger"|"info"}){return <span className={"hawinet-status-badge tone-"+tone}>{children}</span>}

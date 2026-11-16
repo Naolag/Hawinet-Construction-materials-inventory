@@ -1,0 +1,2 @@
+"use client";import type{ReactNode}from"react";import Modal from"./modal";import Button from"./button";
+export default function ConfirmationDialog({title,children,onCancel,onConfirm,confirmLabel="Confirm"}:{title:string;children:ReactNode;onCancel:()=>void;onConfirm:()=>void;confirmLabel?:string}){return <Modal title={title} onClose={onCancel} footer={<><Button onClick={onCancel}>Cancel</Button><Button variant="danger" onClick={onConfirm}>{confirmLabel}</Button></>}>{children}</Modal>}

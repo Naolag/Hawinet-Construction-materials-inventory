@@ -1,0 +1,2 @@
+"use client";import Button from "./button";
+export default function Pagination({page,pageCount,onChange}:{page:number;pageCount:number;onChange:(page:number)=>void}){return <div className="hawinet-pagination"><span>Page {page} of {Math.max(1,pageCount)}</span><div><Button size="sm" disabled={page<=1} onClick={()=>onChange(page-1)}>Previous</Button><Button size="sm" disabled={page>=pageCount} onClick={()=>onChange(page+1)}>Next</Button></div></div>}

@@ -1,0 +1,1 @@
+export type Id=string;export type RecordStatus="Active"|"Inactive";export type PrototypeMode="local-only";

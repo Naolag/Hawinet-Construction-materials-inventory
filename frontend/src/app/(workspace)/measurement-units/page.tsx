@@ -1,0 +1,1 @@
+import MeasurementUnitsPage from"@/features/measurement-units/components/measurement-units-page";export default function Page(){return <MeasurementUnitsPage/>}
